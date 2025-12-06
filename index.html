@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>To-Do with Ding Sound</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+
+    #app {
+      width: 350px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+    #taskInput {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+
+    #addBtn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #addBtn:hover {
+      background: #45a049;
+    }
+
+    ul {
+      margin-top: 20px;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+      padding: 10px;
+      background: #eee;
+      margin-bottom: 8px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    li.done {
+      text-decoration: line-through;
+      color: gray;
+      background: #dcdcdc;
+    }
+
+    .delete {
+      background: red;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <h2>To-Do List</h2>
+
+  <input id="taskInput" placeholder="Enter task..." />
+  <button id="addBtn">Add Task</button>
+
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+  const taskInput = document.getElementById("taskInput");
+  const addBtn = document.getElementById("addBtn");
+  const taskList = document.getElementById("taskList");
+
+  const dingSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+
+  addBtn.addEventListener("click", addTask);
+
+  function addTask() {
+    const text = taskInput.value.trim();
+    if (text === "") return;
+
+    const li = document.createElement("li");
+    li.textContent = text;
+
+    const delBtn = document.createElement("span");
+    delBtn.textContent = "Delete";
+    delBtn.classList.add("delete");
+
+    li.addEventListener("click", () => {
+      if (!li.classList.contains("done")) {
+        li.classList.add("done");
+        dingSound.currentTime = 0;
+        dingSound.play();
+      }
+    });
+
+    delBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      li.remove();
+    });
+
+    li.appendChild(delBtn);
+    taskList.appendChild(li);
+    taskInput.value = "";
+  }
+</script>
+
+</body>
+</html>
